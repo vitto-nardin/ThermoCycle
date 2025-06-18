@@ -9,7 +9,7 @@ class Condenser(Equipment):
     # A herança é indicada por '(Equipment)' após o nome da classe.
 
     def __init__(self, name):
-        # O método __init__ é o construtor da classe Condenser.
+        # O metodo __init__ é o construtor da classe Condenser.
         # Ele é chamado quando uma nova instância de Condenser é criada.
         # 'name' é o argumento para nomear o condensador.
 
