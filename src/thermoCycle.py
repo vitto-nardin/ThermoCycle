@@ -92,7 +92,7 @@ class ThermoCycle(): # Define a classe ThermoCycle sem herdar nenhuma outra clas
         plt.figure(figsize=(10, 8)) # Cria uma nova figura matplotlib com um tamanho específico.
         pos = nx.circular_layout(G) # Calcula as posições dos nós (equipamentos) em um layout circular para o grafo.
 
-        nx.draw(G, pos, with_labels=True, node_size=3000, node_color='lightblue', arrows=True, font_size=10)
+        nx.draw(G, pos, with_labels=True, node_size=6000, node_color='lightblue', arrows=True, font_size=10)
         # Desenha o grafo:
         # - G: o grafo a ser desenhado.
         # - pos: as posições calculadas dos nós.
