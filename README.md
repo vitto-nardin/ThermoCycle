@@ -6,3 +6,5 @@ Updates:
 18/06/2025 - Adicao de comentarios ao codigo original (Vittorio Nardin).
 
 20/06/2025 - Adicao dos equipamentos adicionais e geracao do desenho esquematico do ciclo de Rankine regenerativo (Vittorio Nardin).
+
+26/06/2025 - Adicao da classe pemElectrolyzer que herda os atributos da classe-pai Equipment de maneira a dar inicio ao projeto final da disciplina (Vittorio Nardin).
