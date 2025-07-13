@@ -54,10 +54,25 @@ class ThermoProperty(): # Define uma nova classe chamada 'ThermoProperty'
             self.H = PropsSI('H', 'P', self.P, 'T', self.T, self.fluid)
             # Calcula a entropia (S) usando PropsSI, de forma similar.
             self.S = PropsSI('S', 'P', self.P, 'T', self.T, self.fluid)
+            # Calcula a densidade (rho) [kg/m^{3}]
+            self.rho = PropsSI('D', 'T', self.T, 'P', self.P, self.fluid)
+            # Calcula o calor especifico (cp) a pressao constante [J/(kg*K)]
+            self.cp = PropsSI('CPMASS', 'T', self.T, 'P', self.P, self.fluid)
+            # Calcula a viscosidade dinamica (mu) [Pa*s]
+            self.mu = PropsSI('V', 'T', self.T, 'P', self.P, self.fluid)
+            # Calcula a condutividade térmica (alpha) [W/(m*K)]
+            self.alpha = PropsSI('L', 'T', self.T, 'P', self.P, self.fluid)
+            # Calcula o Prandtl do fluido (Pr)
+            self.Pr = PropsSI('PRANDTL', 'T', self.T, 'P', self.P, self.fluid)
 
             # Formata uma string de resumo com as propriedades calculadas (e de entrada).
             # Converte de volta para unidades mais comuns (kPa, C, kJ/kg, kJ/kgK) para o resumo.
-            self.resume = (f"--- P = {self.P/1e3} kPa\n"
+            self.resume = (f"--- P = {self.P / 1e3} kPa\n"
                            f"--- T = {self.T - 273.15} C\n"
-                           f"--- H = {self.H/1e3} kJ/kg\n"
-                           f"--- S = {self.S/1e3} kJ/kgK\n")
+                           f"--- H = {self.H / 1e3} kJ/kg\n"
+                           f"--- S = {self.S / 1e3} kJ/kgK\n"
+                           f"--- rho = {self.rho} kg/m^{3}\n"
+                           f"--- cp = {self.cp / 1e3} kJ/kgK\n"
+                           f"--- mu = {self.mu} Pa*s\n"
+                           f"--- alpha = {self.alpha / 1e3} kW/mK\n"
+                           f"--- Pr = {self.Pr}")

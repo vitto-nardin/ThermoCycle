@@ -2,7 +2,7 @@ from .equipment import Equipment
 # Importa a classe 'Equipment' do módulo 'equipment'.
 # Essa importação é fundamental para que a classe Heater possa estender a funcionalidade de Equipment.
 
-class Heater(Equipment):
+class pemElectrolyzer(Equipment):
     # Define a classe Heater, indicando que ela é uma subclasse de Equipment
     # através da sintaxe '(Equipment)'.
 
