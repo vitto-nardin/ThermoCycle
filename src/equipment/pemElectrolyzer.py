@@ -21,6 +21,14 @@ class pemElectrolyzer(Equipment):
         # definindo-o como 0.0. Aquecedores são tipicamente dispositivos de troca de calor
         # que não realizam nem consomem trabalho significativo, de forma análoga aos condensadores.
 
+        #self.voltage = None
+        self.current = None
+
+        self.inlet_water = None
+        self.outlet_hydrogen = None
+        self.outlet_water = None
+
+
     def calculate(self):
         # Este metodo define a lógica de cálculo específica para um aquecedor.
         # Ele será chamado para determinar o calor envolvido no processo do aquecedor.
@@ -38,3 +46,15 @@ class pemElectrolyzer(Equipment):
         # Se W = 0, então Q = DeltaH.
         # Como o calor é adicionado, DeltaH (H_out - H_in) será positivo,
         # o que faz com que self.heat também seja positivo, indicando calor entrando no sistema.
+
+    def flowRates(self):
+        faraday_constant = 96485.3 # [C/mol e^{-}]
+        molar_mass_h2 = 0.002016 # [kg/mol]
+        molar_mass_h2o = 0.01801528 # [kg/mol]
+
+        # Vazões
+        self.outlet_hydrogen = self.current*molar_mass_h2/(2*faraday_constant)
+        self.outlet_water = self.inlet_water - self.current*molar_mass_h2o/(2*faraday_constant)
+
+        self.resume = (f"--- Hydrogen Mass Flow Rate = {self.outlet_hydrogen} [kg/s]\n"
+                       f"--- Recirculation Water Flow Rate = {self.outlet_water} [kg/s]\n")

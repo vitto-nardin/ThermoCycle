@@ -11,12 +11,21 @@ from src.equipment.reservoir import Reservoir
 from src.equipment.dehumidifier import Dehumidifier
 from src.equipment.hydrogenTank import HydrogenTank
 
-# Importa todas as classes necessárias do seu projeto. Isso centraliza os componentes que serão utilizados para construir o ciclo termodinâmico.
+# --- Instanciação dos Equipamentos do Ciclo PEM ---
+# Cria instâncias das subclasses de Equipment, cada uma representando um componente físico.
+reservoir = Reservoir("reservoir")
+pump = Pump("pump")
+heater = Heater("heater")
+pem_electrolyzer = pemElectrolyzer("pemElectrolyzer")
+dehumidifier = Dehumidifier("dehumidifier")
+hydrogenTank = HydrogenTank("hydrogenTank")
 
 fluid = "Water" # Define o fluido de trabalho para o ciclo. Neste caso, é "Water".
-water_mass_flow_rate = 1.0  # kg/s
-# Define a vazão mássica do fluido que percorrerá o ciclo.
+fluid02 = "Hydrogen"
+water_mass_flow_rate = 1.0  # [kg/s] Agua de alimentacao
 
+pem_electrolyzer.current = 50000 # [A/m^{2}] Densidade de corrente
+pem_electrolyzer.inlet_water = water_mass_flow_rate # [kg/s] Agua de alimentacao
 
 # --- Definição dos Pontos de Estado (ThermoProperty) ---
 # Cada 'prop_X' representa um ponto de estado termodinâmico específico no ciclo.
@@ -41,18 +50,24 @@ prop_3.set_mass_flow_rate(water_mass_flow_rate)
 prop_3.set_pressure(506625) # Desconsiderando perda de carga no aquecedor
 prop_3.set_temperature(80)
 
+# Calcular os flow rates no eletrolisador PEM
+pem_electrolyzer.flowRates()
+
 prop_4 = ThermoProperty("point_4", fluid) # Depois do eletrolisador PEM
-prop_4.set_mass_flow_rate(water_mass_flow_rate)
+#prop_4.set_mass_flow_rate(water_mass_flow_rate)
+prop_4.set_mass_flow_rate(pem_electrolyzer.outlet_water)
 prop_4.set_pressure(506625) # Desconsiderando perda de carga no eletrolisador PEM
 prop_4.set_temperature(80) # Considerando que o eletrolisador opera de maneira isotérmica
 
-prop_5 = ThermoProperty("point_5", fluid) # Depois do eletrolisador PEM - cátodo
-prop_5.set_mass_flow_rate(water_mass_flow_rate)
+prop_5 = ThermoProperty("point_5", fluid02) # Depois do eletrolisador PEM - catodo
+#prop_5.set_mass_flow_rate(water_mass_flow_rate)
+prop_5.set_mass_flow_rate(pem_electrolyzer.outlet_hydrogen)
 prop_5.set_pressure(3.5e7)
 prop_5.set_temperature(80) # Considerando que o eletrolisador opera de maneira isotérmica
 
-prop_6 = ThermoProperty("point_6", fluid) # Depois do desumidificador
-prop_6.set_mass_flow_rate(water_mass_flow_rate)
+prop_6 = ThermoProperty("point_6", fluid02) # Depois do desumidificador
+#prop_6.set_mass_flow_rate(water_mass_flow_rate)
+prop_6.set_mass_flow_rate(pem_electrolyzer.outlet_hydrogen)
 prop_6.set_pressure(3.5e7) # Desconsiderando perda de carga no desumidificador
 prop_6.set_temperature(80) # Considerando desumidificador isotérmico
 
@@ -85,14 +100,7 @@ pipe_6 = Connector("pipe_6") # Conecta saída do desumidificador à entrada do t
 pipe_6.set_properties_in(prop_6)
 pipe_6.set_properties_out(prop_6)
 
-# --- Instanciação dos Equipamentos do Ciclo ---
-# Cria instâncias das subclasses de Equipment, cada uma representando um componente físico.
-reservoir = Reservoir("reservoir")
-pump = Pump("pump")
-heater = Heater("heater")
-pemElectrolyzer = pemElectrolyzer("pemElectrolyzer")
-dehumidifier = Dehumidifier("dehumidifier")
-hydrogenTank = HydrogenTank("hydrogenTank")
+
 
 # --- Conectando os Equipamentos com os Conectores ---
 # Aqui, define-se quais conectores estão associados às entradas e saídas de cada equipamento.
@@ -108,9 +116,9 @@ pump.add_connectors_out(pipe_2)
 heater.add_connectors_in(pipe_2)
 heater.add_connectors_out(pipe_3)
 
-pemElectrolyzer.add_connectors_in(pipe_3)
-pemElectrolyzer.add_connectors_out(pipe_4)
-pemElectrolyzer.add_connectors_out(pipe_5)
+pem_electrolyzer.add_connectors_in(pipe_3)
+pem_electrolyzer.add_connectors_out(pipe_4)
+pem_electrolyzer.add_connectors_out(pipe_5)
 
 dehumidifier.add_connectors_in(pipe_5)
 dehumidifier.add_connectors_out(pipe_6)
@@ -124,7 +132,7 @@ rankine_power_cycle = pemCycle()
 rankine_power_cycle.add_equipment(reservoir)
 rankine_power_cycle.add_equipment(pump)
 rankine_power_cycle.add_equipment(heater)
-rankine_power_cycle.add_equipment(pemElectrolyzer)
+rankine_power_cycle.add_equipment(pem_electrolyzer)
 rankine_power_cycle.add_equipment(dehumidifier)
 rankine_power_cycle.add_equipment(hydrogenTank)
 
@@ -146,3 +154,7 @@ rankine_power_cycle.calculate_efficiency()
 
 rankine_power_cycle.draw("app_aula.png")
 # Gera um diagrama do ciclo e o salva como "app_aula.png" usando networkx e matplotlib. Este é um recurso visual excelente para verificar a topologia do ciclo.
+
+# Adicione isto para ver os resultados
+print("\nResultados do Eletrolisador PEM:")
+print(pem_electrolyzer.resume)

@@ -67,7 +67,8 @@ class ThermoProperty(): # Define uma nova classe chamada 'ThermoProperty'
 
             # Formata uma string de resumo com as propriedades calculadas (e de entrada).
             # Converte de volta para unidades mais comuns (kPa, C, kJ/kg, kJ/kgK) para o resumo.
-            self.resume = (f"--- P = {self.P / 1e3} kPa\n"
+            self.resume = (f"--- Fluid = {self.fluid}\n"
+                           f"--- P = {self.P / 1e3} kPa\n"
                            f"--- T = {self.T - 273.15} C\n"
                            f"--- H = {self.H / 1e3} kJ/kg\n"
                            f"--- S = {self.S / 1e3} kJ/kgK\n"
