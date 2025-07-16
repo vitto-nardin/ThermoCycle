@@ -21,12 +21,15 @@ class pemElectrolyzer(Equipment):
         # definindo-o como 0.0. Aquecedores são tipicamente dispositivos de troca de calor
         # que não realizam nem consomem trabalho significativo, de forma análoga aos condensadores.
 
-        #self.voltage = None
         self.current = None
+        self.temperature = None
+        self.efficiency = None
+        self.hydrogen_pressure = None
 
         self.inlet_water = None
         self.outlet_hydrogen = None
         self.outlet_water = None
+        self.outlet_oxygen = None
 
 
     def calculate(self):
@@ -47,14 +50,18 @@ class pemElectrolyzer(Equipment):
         # Como o calor é adicionado, DeltaH (H_out - H_in) será positivo,
         # o que faz com que self.heat também seja positivo, indicando calor entrando no sistema.
 
+
     def flowRates(self):
         faraday_constant = 96485.3 # [C/mol e^{-}]
         molar_mass_h2 = 0.002016 # [kg/mol]
         molar_mass_h2o = 0.01801528 # [kg/mol]
+        molar_mass_o2 = 0.0160 # [kg/mol]
 
         # Vazões
-        self.outlet_hydrogen = self.current*molar_mass_h2/(2*faraday_constant)
-        self.outlet_water = self.inlet_water - self.current*molar_mass_h2o/(2*faraday_constant)
+        self.outlet_hydrogen = self.efficiency*self.current*molar_mass_h2/(2*faraday_constant)
+        self.outlet_water = self.inlet_water - self.efficiency*self.current*molar_mass_h2o/(2*faraday_constant)
+        self.outlet_oxygen = self.efficiency*self.current*molar_mass_o2/(4*faraday_constant)
 
         self.resume = (f"--- Hydrogen Mass Flow Rate = {self.outlet_hydrogen} [kg/s]\n"
-                       f"--- Recirculation Water Flow Rate = {self.outlet_water} [kg/s]\n")
+                       f"--- Recirculation Water Flow Rate = {self.outlet_water} [kg/s]\n"
+                       f"--- Produced Oxygen = {self.outlet_oxygen} [kg/s]\n")

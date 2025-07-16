@@ -1,12 +1,16 @@
 class Connector(): # Define uma nova classe chamada Connector. Diferente dos equipamentos, ela não herda da classe
 # Equipment.
 
-    def __init__(self, name):
+    def __init__(self, name, length):
         # O construtor da classe Connector.
         # 'name' é um atributo identificador para o conector (ex: "Corrente de Saída da Bomba", "Entrada do Aquecedor").
 
         self.name = name
         # Atribui o nome ao conector.
+
+        self.length = length
+
+        self.DeltaP = None
 
         self.property_in = None
         # Inicializa 'property_in' como None. Este atributo vai armazenar um objeto ThermoProperty que representa as propriedades da corrente que ENTRA no conector (ou seja, a que vem do equipamento 'equipment_in').
@@ -36,6 +40,9 @@ class Connector(): # Define uma nova classe chamada Connector. Diferente dos equ
     def set_properties_out(self, property):
         # Define o objeto ThermoProperty que descreve a corrente que sai do conector.
         self.property_out = property
+
+    def pressureLoss(self):
+        self.DeltaP = self.length*1000
 
 
     def calculate(self):
