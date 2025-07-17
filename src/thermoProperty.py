@@ -69,11 +69,4 @@ class ThermoProperty(): # Define uma nova classe chamada 'ThermoProperty'
             # Converte de volta para unidades mais comuns (kPa, C, kJ/kg, kJ/kgK) para o resumo.
             self.resume = (f"--- Fluid = {self.fluid}\n"
                            f"--- P = {self.P / 1e3} kPa\n"
-                           f"--- T = {self.T - 273.15} C\n"
-                           f"--- H = {self.H / 1e3} kJ/kg\n"
-                           f"--- S = {self.S / 1e3} kJ/kgK\n"
-                           f"--- rho = {self.rho} kg/m^{3}\n"
-                           f"--- cp = {self.cp / 1e3} kJ/kgK\n"
-                           f"--- mu = {self.mu} Pa*s\n"
-                           f"--- alpha = {self.alpha / 1e3} kW/mK\n"
-                           f"--- Pr = {self.Pr}")
+                           f"--- T = {self.T - 273.15} C\n")

@@ -11,6 +11,7 @@ from src.equipment.pemElectrolyzer import pemElectrolyzer
 from src.equipment.reservoir import Reservoir
 from src.equipment.dehumidifier import Dehumidifier
 from src.equipment.hydrogenTank import HydrogenTank
+from src.equipment.cooler import Cooler
 
 # --- Instanciação dos Equipamentos do Ciclo PEM ---
 # Cria instâncias das subclasses de Equipment, cada uma representando um componente físico.
@@ -20,16 +21,16 @@ heater = Heater("heater")
 pem_electrolyzer = pemElectrolyzer("pemElectrolyzer")
 dehumidifier = Dehumidifier("dehumidifier")
 hydrogenTank = HydrogenTank("hydrogenTank")
+cooler = Cooler("cooler")
 
 # # # CONDICOES OPERACIONAIS # # #
 fluid = "Water" # Define o fluido de trabalho para o ciclo. Neste caso, é "Water".
 fluid02 = "Hydrogen"
-water_mass_flow_rate = 1.0  # [kg/s] Agua de alimentacao
+water_mass_flow_rate = 0.01  # [kg/s] Agua de alimentacao
 
 pem_electrolyzer.temperature = 353.15 # ºC Temperatura de operação do eletrolisador PEM
 pem_electrolyzer.hydrogen_pressure = 3.5e7 # Pa pressão do hidrogenio produzido
-pem_electrolyzer.current = 50000 # [A/m^{2}] Densidade de corrente no eletrolisador PEM
-pem_electrolyzer.efficiency = 0.9 # Eficiencia do eletrolisador PEM
+pem_electrolyzer.current = 10000 # [A/m^{2}] Densidade de corrente no eletrolisador PEM
 pem_electrolyzer.inlet_water = water_mass_flow_rate # [kg/s] Agua de alimentacao
 
 #######################################################################################################
@@ -86,6 +87,7 @@ pipe_3.set_properties_out(prop_3b)
 #######################################################################################################
 
 # Calcula os flow rates no eletrolisador PEM - Lei de Faraday Eletrolise
+pem_electrolyzer.pemEfficiency()
 pem_electrolyzer.flowRates()
 
 prop_4 = ThermoProperty("point_4", fluid) # Depois do eletrolisador PEM
@@ -122,9 +124,18 @@ prop_6.set_mass_flow_rate(pem_electrolyzer.outlet_hydrogen)
 prop_6.set_pressure(pem_electrolyzer.hydrogen_pressure) # Desconsiderando perda de carga no desumidificador
 prop_6.set_temperature(pem_electrolyzer.temperature) # Considerando desumidificador isotérmico
 
-pipe_6 = Connector("pipe_6", 1.0) # Conecta saída do desumidificador à entrada do tanque de h2
+pipe_6 = Connector("pipe_6", 1.0) # Conecta saída do desumidificador à entrada do cooler
 pipe_6.set_properties_in(prop_6)
 pipe_6.set_properties_out(prop_6)
+
+prop_7 = ThermoProperty("point_7", fluid02)
+prop_7.set_mass_flow_rate(pem_electrolyzer.outlet_hydrogen)
+prop_7.set_pressure(pem_electrolyzer.hydrogen_pressure)
+prop_7.set_temperature(293.15) # armazenamento de h2 a temperatura ambiente e 350 bar
+
+pipe_7 = Connector("pipe_7", 1.0) # Conecta saída do cooler à entrada do reservatório de h2
+pipe_7.set_properties_in(prop_7)
+pipe_7.set_properties_out(prop_7)
 
 # --- Conectando os Equipamentos com os Conectores ---
 reservoir.add_connectors_in(pipe_4)
@@ -143,7 +154,10 @@ pem_electrolyzer.add_connectors_out(pipe_5)
 dehumidifier.add_connectors_in(pipe_5)
 dehumidifier.add_connectors_out(pipe_6)
 
-hydrogenTank.add_connectors_in(pipe_6)
+cooler.add_connectors_in(pipe_6)
+cooler.add_connectors_out(pipe_7)
+
+hydrogenTank.add_connectors_in(pipe_7)
 
 
 # --- Construção e Simulação do Ciclo Termodinâmico ---
@@ -154,7 +168,9 @@ pem_cycle.add_equipment(pump)
 pem_cycle.add_equipment(heater)
 pem_cycle.add_equipment(pem_electrolyzer)
 pem_cycle.add_equipment(dehumidifier)
+pem_cycle.add_equipment(cooler)
 pem_cycle.add_equipment(hydrogenTank)
+
 
 # --- Execução da Simulação ---
 pem_cycle.initialize()
@@ -172,9 +188,12 @@ pem_cycle.calculate()
 pem_cycle.calculate_efficiency()
 # Chama o metodo 'calculate_efficiency()' para determinar a eficiência térmica global do ciclo, com base nos valores de trabalho e calor calculados.
 
-pem_cycle.draw("app_aula.png")
+pem_cycle.draw("app_PEM.png")
 # Gera um diagrama do ciclo e o salva como "app_aula.png" usando networkx e matplotlib. Este é um recurso visual excelente para verificar a topologia do ciclo.
 
 # Adicione isto para ver os resultados
 print("\nResultados do Eletrolisador PEM:")
 print(pem_electrolyzer.resume)
+
+print("\nResultados do Ciclo PEM:")
+print(pem_cycle.efficiency*pem_electrolyzer.efficiency)

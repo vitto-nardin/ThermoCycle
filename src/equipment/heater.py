@@ -38,3 +38,5 @@ class Heater(Equipment):
         # Se W = 0, então Q = DeltaH.
         # Como o calor é adicionado, DeltaH (H_out - H_in) será positivo,
         # o que faz com que self.heat também seja positivo, indicando calor entrando no sistema.
+
+        self.resume = (f"--- Heater Self.Heat = {self.heat} [J]\n")

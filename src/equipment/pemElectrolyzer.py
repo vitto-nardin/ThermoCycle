@@ -16,12 +16,13 @@ class pemElectrolyzer(Equipment):
         # Isso é crucial para inicializar todos os atributos definidos em Equipment,
         # como 'name', 'connectors_in', 'properties_in', 'heat', 'work', etc.
 
-        self.work = 0.0
+        self.work = 0
         # Sobrescreve o atributo 'work' (trabalho) que foi inicializado como None na classe Equipment,
         # definindo-o como 0.0. Aquecedores são tipicamente dispositivos de troca de calor
         # que não realizam nem consomem trabalho significativo, de forma análoga aos condensadores.
 
         self.current = None
+        self.voltage = None
         self.temperature = None
         self.efficiency = None
         self.hydrogen_pressure = None
@@ -36,7 +37,7 @@ class pemElectrolyzer(Equipment):
         # Este metodo define a lógica de cálculo específica para um aquecedor.
         # Ele será chamado para determinar o calor envolvido no processo do aquecedor.
 
-        self.heat = self.enthalpy_balance
+        self.heat = 0
         # Atribui o valor do 'self.enthalpy_balance' ao 'self.heat'.
         # O 'self.enthalpy_balance' é calculado pelo metodo 'energy_balance' (herdado de Equipment),
         # que representa a diferença entre a entalpia total de saída e a entalpia total de entrada
@@ -50,6 +51,9 @@ class pemElectrolyzer(Equipment):
         # Como o calor é adicionado, DeltaH (H_out - H_in) será positivo,
         # o que faz com que self.heat também seja positivo, indicando calor entrando no sistema.
 
+    def pemEfficiency(self):
+        self.voltage = 0.0381*((self.current/1e4)**2) + 0.1221*(self.current/1e4) + 1.6797
+        self.efficiency = 1.481/self.voltage
 
     def flowRates(self):
         faraday_constant = 96485.3 # [C/mol e^{-}]
@@ -64,4 +68,8 @@ class pemElectrolyzer(Equipment):
 
         self.resume = (f"--- Hydrogen Mass Flow Rate = {self.outlet_hydrogen} [kg/s]\n"
                        f"--- Recirculation Water Flow Rate = {self.outlet_water} [kg/s]\n"
-                       f"--- Produced Oxygen = {self.outlet_oxygen} [kg/s]\n")
+                       f"--- Produced Oxygen = {self.outlet_oxygen} [kg/s]\n"
+                       f"--- PEM Electrolyzer Efficiency = {self.efficiency}\n")
+
+
+

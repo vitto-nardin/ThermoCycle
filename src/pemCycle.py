@@ -20,7 +20,8 @@ class pemCycle(): # Define a classe pemCycle sem herdar nenhuma outra classe.
         self.equipments = [] # Inicializa uma lista vazia para os equipamentos do pemCycle
         self.connectors = [] # Inicializa uma lista vazia para os conectores do pemCycle
         self.efficiency = None # Inicializa o atributo efficiency como None.
-
+        self.W_liq = None
+        self.Q_in = None
 
     def add_equipment(self, equipment):
         # Este metodo permite adicionar uma instancia de Equipment (ou uma subclasse de Equipment) a lista de equipamentos do ciclo.
@@ -66,18 +67,22 @@ class pemCycle(): # Define a classe pemCycle sem herdar nenhuma outra classe.
         Q_in = 0.0 # Inicializa o calor total adicionado como zero.
 
         for equipment in self.equipments: # Itera sobre cada equipamento para somar o trabalho e o calor.
-            if isinstance(equipment, Turbine): # Se o equipamento é uma Turbina (que gera trabalho positivo):
-                W_liq += equipment.work
+            #if isinstance(equipment, Turbine): # Se o equipamento é uma Turbina (que gera trabalho positivo):
+             #   W_liq += equipment.work
 
-            elif isinstance(equipment, Pump): # Se o equipamento é uma Bomba (que consome trabalho, então 'work' será negativo):
+            #elif isinstance(equipment, Pump): # Se o equipamento é uma Bomba (que consome trabalho, então 'work' será negativo):
+            if isinstance(equipment, Pump):
                 W_liq += equipment.work
 
             elif isinstance(equipment, Heater): # Se o equipamento é um Aquecedor (que adiciona calor positivo):
                 Q_in += equipment.heat
 
                 # Obs: Condensadores não são incluídos no Q_in porque removem calor (Q_out).
-
+        self.W_liq = W_liq
+        self.Q_in = Q_in
         self.efficiency = W_liq / Q_in # Calcula a eficiência dividindo o trabalho líquido pelo calor adicionado e armazena o resultado. É importante notar que 'W_liq' é a soma algébrica de trabalho positivo (turbina) e negativo (bomba).
+
+        self.resume = (f"--- Cycle Efficiency = {self.efficiency} \n")
 
     def draw(self, output_file): # Este metodo gera um diagrama visual do ciclo usando networkx e matplotlib.
         G = nx.DiGraph() # Cria um novo grafo direcionado (DiGraph) do networkx.
