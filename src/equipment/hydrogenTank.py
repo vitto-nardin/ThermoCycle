@@ -29,7 +29,7 @@ class HydrogenTank(Equipment):
         # Este metodo define a lógica de cálculo específica para uma bomba.
         # Ele será responsável por determinar o trabalho associado à operação da bomba.
 
-        self.work = - self.enthalpy_balance
+        self.work = - 250
         # Atribui o valor do trabalho ('self.work') ao negativo do balanço de entalpia
         # ('self.enthalpy_balance').
 

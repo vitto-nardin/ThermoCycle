@@ -1,7 +1,13 @@
+from .equipment.dehumidifier import Dehumidifier
+from .equipment.hydrogenTank import HydrogenTank
 from .equipment.turbine import Turbine
 from .equipment.heater import Heater
+from .equipment.cooler import Cooler
 from .equipment.condenser import Condenser
 from .equipment.pump import Pump
+from .equipment.pemElectrolyzer import pemElectrolyzer
+from .equipment.reservoir import Reservoir
+
 # Importa as classes específicas de equipamento (Turbine, Heater, Condenser, Pump)
 # do diretório 'equipment'. Isso permite que a classe pemCycle reconheça e interaja
 # com esses tipos especializados de equipamentos.
@@ -67,22 +73,37 @@ class pemCycle(): # Define a classe pemCycle sem herdar nenhuma outra classe.
         Q_in = 0.0 # Inicializa o calor total adicionado como zero.
 
         for equipment in self.equipments: # Itera sobre cada equipamento para somar o trabalho e o calor.
-            #if isinstance(equipment, Turbine): # Se o equipamento é uma Turbina (que gera trabalho positivo):
-             #   W_liq += equipment.work
-
-            #elif isinstance(equipment, Pump): # Se o equipamento é uma Bomba (que consome trabalho, então 'work' será negativo):
-            if isinstance(equipment, Pump):
+            if isinstance(equipment, pemElectrolyzer): # Se o equipamento é uma Turbina (que gera trabalho positivo):
                 W_liq += equipment.work
+                Q_in += equipment.heat
+            #elif isinstance(equipment, Pump): # Se o equipamento é uma Bomba (que consome trabalho, então 'work' será negativo):
+            elif isinstance(equipment, Pump):
+                Q_in -= equipment.work
 
             elif isinstance(equipment, Heater): # Se o equipamento é um Aquecedor (que adiciona calor positivo):
-                Q_in += equipment.heat
+                Q_in -= equipment.heat
 
+            elif isinstance(equipment, Cooler):
+                Q_in -= equipment.heat
                 # Obs: Condensadores não são incluídos no Q_in porque removem calor (Q_out).
+
+            elif isinstance(equipment,Reservoir):
+                Q_in -= equipment.work
+
+            elif isinstance(equipment, Dehumidifier):
+                Q_in -= equipment.work
+
+            elif isinstance(equipment,HydrogenTank):
+                Q_in -= equipment.work
+
         self.W_liq = W_liq
         self.Q_in = Q_in
+        #self.efficiency = pemElectrolyzer.flowRates(self.efficiency)
         self.efficiency = W_liq / Q_in # Calcula a eficiência dividindo o trabalho líquido pelo calor adicionado e armazena o resultado. É importante notar que 'W_liq' é a soma algébrica de trabalho positivo (turbina) e negativo (bomba).
 
-        self.resume = (f"--- Cycle Efficiency = {self.efficiency} \n")
+        self.resume = (f"--- Cycle W_liq = {self.W_liq} \n"
+                       f"--- Cycle W_in = {self.Q_in} \n"
+                       f"--- Cycle Overall Efficiency = {self.efficiency}\n")
 
     def draw(self, output_file): # Este metodo gera um diagrama visual do ciclo usando networkx e matplotlib.
         G = nx.DiGraph() # Cria um novo grafo direcionado (DiGraph) do networkx.

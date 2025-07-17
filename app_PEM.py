@@ -26,11 +26,11 @@ cooler = Cooler("cooler")
 # # # CONDICOES OPERACIONAIS # # #
 fluid = "Water" # Define o fluido de trabalho para o ciclo. Neste caso, é "Water".
 fluid02 = "Hydrogen"
-water_mass_flow_rate = 0.01  # [kg/s] Agua de alimentacao
+water_mass_flow_rate = 0.01 # [kg/s] Agua de alimentacao. De 0.0025 (150 ml/min) a 0.0167 (1000 ml/min)
 
 pem_electrolyzer.temperature = 353.15 # ºC Temperatura de operação do eletrolisador PEM
 pem_electrolyzer.hydrogen_pressure = 3.5e7 # Pa pressão do hidrogenio produzido
-pem_electrolyzer.current = 10000 # [A/m^{2}] Densidade de corrente no eletrolisador PEM
+pem_electrolyzer.current = 50000 # [A/m^{2}] Densidade de corrente no eletrolisador PEM
 pem_electrolyzer.inlet_water = water_mass_flow_rate # [kg/s] Agua de alimentacao
 
 #######################################################################################################
@@ -192,8 +192,8 @@ pem_cycle.draw("app_PEM.png")
 # Gera um diagrama do ciclo e o salva como "app_aula.png" usando networkx e matplotlib. Este é um recurso visual excelente para verificar a topologia do ciclo.
 
 # Adicione isto para ver os resultados
-print("\nResultados do Eletrolisador PEM:")
+print("\nPerformance do Eletrolisador PEM:")
 print(pem_electrolyzer.resume)
 
-print("\nResultados do Ciclo PEM:")
-print(pem_cycle.efficiency*pem_electrolyzer.efficiency)
+print("\nResultados Ciclo PEM de H2 Verde:")
+print(pem_cycle.resume)
