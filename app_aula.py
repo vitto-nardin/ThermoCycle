@@ -74,39 +74,39 @@ prop_9.set_temperature(80)
 # Aqui, a lógica é que 'property_in' e 'property_out' do conector são o MESMO objeto ThermoProperty,
 # indicando que as propriedades da corrente não mudam significativamente ao passar pela tubulação.
 
-pipe_1 = Connector("pipe_1") # Conecta saída do Heater à entrada da Turbine
+pipe_1 = Connector("pipe_1", 1.0) # Conecta saída do Heater à entrada da Turbine
 pipe_1.set_properties_in(prop_3)
 pipe_1.set_properties_out(prop_3)
 
-pipe_2 = Connector("pipe_2") # Conecta saída da Turbine à entrada do Condenser
+pipe_2 = Connector("pipe_2", 1.0) # Conecta saída da Turbine à entrada do Condenser
 pipe_2.set_properties_in(prop_4)
 pipe_2.set_properties_out(prop_4)
 
-pipe_3 = Connector("pipe_3") # Conecta saída do Condenser à entrada da Pump
+pipe_3 = Connector("pipe_3", 1.0) # Conecta saída do Condenser à entrada da Pump
 pipe_3.set_properties_in(prop_1)
 pipe_3.set_properties_out(prop_1)
 
-pipe_4 = Connector("pipe_4") # Conecta saída da Pump à entrada do Heater
+pipe_4 = Connector("pipe_4", 1.0) # Conecta saída da Pump à entrada do Heater
 pipe_4.set_properties_in(prop_2)
 pipe_4.set_properties_out(prop_2)
 
-pipe_5 = Connector("pipe_5")
+pipe_5 = Connector("pipe_5", 1.0)
 pipe_5.set_properties_in(prop_5)
 pipe_5.set_properties_out(prop_5)
 
-pipe_6 = Connector("pipe_6")
+pipe_6 = Connector("pipe_6", 1.0)
 pipe_6.set_properties_in(prop_6)
 pipe_6.set_properties_out(prop_6)
 
-pipe_7 = Connector("pipe_7")
+pipe_7 = Connector("pipe_7", 1.0)
 pipe_7.set_properties_in(prop_7)
 pipe_7.set_properties_out(prop_7)
 
-pipe_8 = Connector("pipe_8")
+pipe_8 = Connector("pipe_8", 1.0)
 pipe_8.set_properties_in(prop_8)
 pipe_8.set_properties_out(prop_8)
 
-pipe_9 = Connector("pipe_9")
+pipe_9 = Connector("pipe_9", 1.0)
 pipe_9.set_properties_in(prop_9)
 pipe_9.set_properties_out(prop_9)
 
