@@ -26,11 +26,11 @@ cooler = Cooler("cooler")
 # # # CONDICOES OPERACIONAIS # # #
 fluid = "Water" # Define o fluido de trabalho para o ciclo. Neste caso, é "Water".
 fluid02 = "Hydrogen"
-water_mass_flow_rate = 0.01 # [kg/s] Agua de alimentacao. De 0.0025 (150 ml/min) a 0.0167 (1000 ml/min)
+water_mass_flow_rate = 0.0025 # [kg/s] Agua de alimentacao. De 0.0025 (150 ml/min) a 0.0167 (1000 ml/min)
 
 pem_electrolyzer.temperature = 353.15 # ºC Temperatura de operação do eletrolisador PEM
 pem_electrolyzer.hydrogen_pressure = 3.5e7 # Pa pressão do hidrogenio produzido
-pem_electrolyzer.current = 50000 # [A/m^{2}] Densidade de corrente no eletrolisador PEM
+pem_electrolyzer.current = 20000 # [A/m^{2}] Densidade de corrente no eletrolisador PEM
 pem_electrolyzer.inlet_water = water_mass_flow_rate # [kg/s] Agua de alimentacao
 
 #######################################################################################################
