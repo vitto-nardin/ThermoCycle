@@ -28,6 +28,7 @@ The simulator demonstrates the practical application of the developed framework 
 
 
 Updates:
+
 14/06/2025 - Original code development for Rankine Cycle (Rafael F.L. de Cerqueira).
 
 18/06/2025 - Added comments to the original code (Vittorio Nardin).
