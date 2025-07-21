@@ -1,6 +1,8 @@
 # ThermoCycle and PemCycle Simulator
 The Thermodynamic and PEM Hydrogen Production Simulator is a Python-based tool designed for modeling and analyzing various thermodynamic cycles, built upon Object-Oriented Programming (OOP) principles.
 
+The present code was developed by me, M.Sc. Vittorio Nardin, in 2025 for the Scientific Programming for Thermal Sciences lecture administered by Professor P.h.D. Rafael F.L. de Cerqueira at the Mechanical Engineering Post-Graduate Program of the Universidade Federal de Santa Catarina (UFSC), Florianópolis, Santa Catarina, Brasil.
+
 Its core capabilities include:
 
 ### General Thermodynamic Cycle Simulation
