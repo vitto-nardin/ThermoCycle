@@ -1,4 +1,4 @@
-# Este código é um exemplo prático de como as classes ThermoProperty, Conector, Equipment (e suas subclasses), e ThermoCycle são usadas em conjunto para simular um ciclo termodinâmico completo, especificamente um Ciclo Rankine. Ele demonstra a aplicação do framework que você desenvolveu, construindo e analisando um sistema real.
+# This code is a practical example of how the ThermoProperty, Connector, Equipment (and its subclasses), and ThermoCycle classes are used together to simulate a complete thermodynamic cycle, specifically a Rankine Cycle. It demonstrates the application of the framework you developed, building and analyzing a real system.
 
 from src.thermoProperty import ThermoProperty
 from src.connector import Connector
@@ -9,20 +9,20 @@ from src.equipment.heatExchanger import heatExchanger
 from src.equipment.mixingChamber import mixingChamber
 from src.equipment.pump import Pump
 from src.thermoCycle import ThermoCycle
-# Importa todas as classes necessárias do seu projeto. Isso centraliza os componentes que serão utilizados para construir o ciclo termodinâmico.
+# Imports all necessary classes from your project. This centralizes the components that will be used to build the thermodynamic cycle.
 
-fluid = "Water" # Define o fluido de trabalho para o ciclo. Neste caso, é "Water".
+fluid = "Water" # Defines the working fluid for the cycle. In this case, it is "Water".
 water_mass_flow_rate = 1.0  # kg/s
-# Define a vazão mássica do fluido que percorrerá o ciclo.
+# Defines the mass flow rate of the fluid that will flow through the cycle.
 
 
-# --- Definição dos Pontos de Estado (ThermoProperty) ---
-# Cada 'prop_X' representa um ponto de estado termodinâmico específico no ciclo.
-# Os valores de pressão (P) e temperatura (T) são fornecidos para cada ponto,
-# permitindo que a classe ThermoProperty calcule as demais propriedades
-# (entalpia H, entropia S, etc.) usando CoolProp.
-# Note que a temperatura é definida em Celsius e convertida para Kelvin internamente.
-# A pressão é definida em Pascal.
+# --- Definition of State Points (ThermoProperty) ---
+# Each 'prop_X' represents a specific thermodynamic state point in the cycle.
+# The pressure (P) and temperature (T) values are provided for each point,
+# allowing the ThermoProperty class to calculate the other properties
+# (enthalpy H, entropy S, etc.) using CoolProp.
+# Note that the temperature is defined in Celsius and converted to Kelvin internally.
+# Pressure is defined in Pascal.
 
 prop_1 = ThermoProperty("point_1", fluid)
 prop_1.set_mass_flow_rate(water_mass_flow_rate)
@@ -69,24 +69,24 @@ prop_9.set_mass_flow_rate(water_mass_flow_rate)
 prop_9.set_pressure(3e6)
 prop_9.set_temperature(80)
 
-# --- Definição dos Conectores (Tubulações) ---
-# Cada 'pipe_X' representa uma tubulação ou fluxo que conecta os equipamentos.
-# Aqui, a lógica é que 'property_in' e 'property_out' do conector são o MESMO objeto ThermoProperty,
-# indicando que as propriedades da corrente não mudam significativamente ao passar pela tubulação.
+# --- Definition of Connectors (Pipes) ---
+# Each 'pipe_X' represents a pipe or flow that connects the equipment.
+# Here, the logic is that 'property_in' and 'property_out' of the connector are the SAME ThermoProperty object,
+# indicating that the stream properties do not change significantly when passing through the pipe.
 
-pipe_1 = Connector("pipe_1", 1.0) # Conecta saída do Heater à entrada da Turbine
+pipe_1 = Connector("pipe_1", 1.0) # Connects Heater outlet to Turbine inlet
 pipe_1.set_properties_in(prop_3)
 pipe_1.set_properties_out(prop_3)
 
-pipe_2 = Connector("pipe_2", 1.0) # Conecta saída da Turbine à entrada do Condenser
+pipe_2 = Connector("pipe_2", 1.0) # Connects Turbine outlet to Condenser inlet
 pipe_2.set_properties_in(prop_4)
 pipe_2.set_properties_out(prop_4)
 
-pipe_3 = Connector("pipe_3", 1.0) # Conecta saída do Condenser à entrada da Pump
+pipe_3 = Connector("pipe_3", 1.0) # Connects Condenser outlet to Pump inlet
 pipe_3.set_properties_in(prop_1)
 pipe_3.set_properties_out(prop_1)
 
-pipe_4 = Connector("pipe_4", 1.0) # Conecta saída da Pump à entrada do Heater
+pipe_4 = Connector("pipe_4", 1.0) # Connects Pump outlet to Heater inlet
 pipe_4.set_properties_in(prop_2)
 pipe_4.set_properties_out(prop_2)
 
@@ -111,8 +111,8 @@ pipe_9.set_properties_in(prop_9)
 pipe_9.set_properties_out(prop_9)
 
 
-# --- Instanciação dos Equipamentos do Ciclo ---
-# Cria instâncias das subclasses de Equipment, cada uma representando um componente físico.
+# --- Instantiation of Cycle Equipment ---
+# Creates instances of Equipment subclasses, each representing a physical component.
 heater = Heater("heater")
 turbine = Turbine("turbine")
 condenser = Condenser("condenser")
@@ -121,10 +121,10 @@ pumpAux = Pump("pumpAux")
 heatExchanger = heatExchanger("heatExchanger")
 mixingChamber = mixingChamber("mixingChamber")
 
-# --- Conectando os Equipamentos com os Conectores ---
-# Aqui, define-se quais conectores estão associados às entradas e saídas de cada equipamento.
-# Esta é a etapa fundamental para montar a topologia do ciclo.
-# Por exemplo, 'heater.add_connectors_in(pipe_4)' significa que 'pipe_4' alimenta o 'heater'.
+# --- Connecting Equipment with Connectors ---
+# Here, it is defined which connectors are associated with the inputs and outputs of each equipment.
+# This is the fundamental step to assemble the cycle topology.
+# For example, 'heater.add_connectors_in(pipe_4)' means that 'pipe_4' feeds the 'heater'.
 
 heater.add_connectors_in(pipe_9)
 heater.add_connectors_out(pipe_1)
@@ -152,8 +152,8 @@ mixingChamber.add_connectors_in(pipe_8)
 mixingChamber.add_connectors_out(pipe_9)
 
 
-# --- Construção e Simulação do Ciclo Termodinâmico ---
-# Cria uma instância da classe ThermoCycle e adiciona todos os equipamentos a ela.
+# --- Construction and Simulation of the Thermodynamic Cycle ---
+# Creates an instance of the ThermoCycle class and adds all equipment to it.
 rankine_power_cycle = ThermoCycle()
 rankine_power_cycle.add_equipment(pump)
 rankine_power_cycle.add_equipment(turbine)
@@ -163,21 +163,21 @@ rankine_power_cycle.add_equipment(heatExchanger)
 rankine_power_cycle.add_equipment(pumpAux)
 rankine_power_cycle.add_equipment(mixingChamber)
 
-# --- Execução da Simulação ---
+# --- Simulation Execution ---
 rankine_power_cycle.initialize()
-# Chama o metodo 'initialize()' do ThermoCycle. Este metodo é crucial:
-# Ele percorre os equipamentos e seus conectores, vinculando as propriedades termodinâmicas
-# dos conectores às listas 'properties_in' e 'properties_out' dos equipamentos.
-# Também garante que todos os conectores sejam adicionados à lista de conectores do ciclo.
+# Calls the 'initialize()' method of ThermoCycle. This method is crucial:
+# It iterates through the equipment and its connectors, linking the thermodynamic properties
+# of the connectors to the 'properties_in' and 'properties_out' lists of the equipment.
+# Also ensures that all connectors are added to the cycle's connector list.
 
 rankine_power_cycle.calculate()
-# Chama o metodo 'calculate()' do ThermoCycle. Isso executa a sequência de cálculos:
-# 1. 'connector.calculate()' para todos os conectores (garante que as propriedades dos pontos sejam calculadas via CoolProp).
-# 2. 'equipment.energy_balance()' para todos os equipamentos (calcula enthalpy_balance para cada um).
-# 3. 'equipment.calculate()' para todos os equipamentos (calcula calor/trabalho específico de cada tipo de equipamento).
+# Calls the 'calculate()' method of ThermoCycle. This executes the calculation sequence:
+# 1. 'connector.calculate()' for all connectors (ensures that point properties are calculated via CoolProp).
+# 2. 'equipment.energy_balance()' for all equipment (calculates enthalpy_balance for each).
+# 3. 'equipment.calculate()' for all equipment (calculates specific heat/work for each equipment type).
 
 rankine_power_cycle.calculate_efficiency()
-# Chama o metodo 'calculate_efficiency()' para determinar a eficiência térmica global do ciclo, com base nos valores de trabalho e calor calculados.
+# Calls the 'calculate_efficiency()' method to determine the overall thermal efficiency of the cycle, based on the calculated work and heat values.
 
 rankine_power_cycle.draw("app_aula.png")
-# Gera um diagrama do ciclo e o salva como "app_aula.png" usando networkx e matplotlib. Este é um recurso visual excelente para verificar a topologia do ciclo.
+# Generates a cycle diagram and saves it as "app_aula.png" using networkx and matplotlib. This is an excellent visual resource for verifying the cycle topology.

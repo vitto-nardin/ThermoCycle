@@ -1,40 +1,40 @@
 from .equipment import Equipment
-# Importa a classe 'Equipment' do módulo 'equipment' (o ponto '.' indica que
-# é um módulo dentro do mesmo pacote ou diretório).
-# Isso é essencial para que Condenser possa herdar de Equipment.
+# Imports the 'Equipment' class from the 'equipment' module (the dot '.' indicates that
+# it is a module within the same package or directory).
+# This is essential for Condenser to inherit from Equipment.
 
 
 class Condenser(Equipment):
-    # Define a classe Condenser que herda de Equipment.
-    # A herança é indicada por '(Equipment)' após o nome da classe.
+    # Defines the Condenser class which inherits from Equipment.
+    # Inheritance is indicated by '(Equipment)' after the class name.
 
     def __init__(self, name):
-        # O metodo __init__ é o construtor da classe Condenser.
-        # Ele é chamado quando uma nova instância de Condenser é criada.
-        # 'name' é o argumento para nomear o condensador.
+        # The __init__ method is the constructor of the Condenser class.
+        # It is called when a new instance of Condenser is created.
+        # 'name' is the argument to name the condenser.
 
         super().__init__(name)
-        # Chama o construtor da classe pai (Equipment) usando 'super()'.
-        # Isso garante que todos os atributos de Equipment (name, connectors_in,
-        # properties_in, heat, work, etc.) sejam inicializados corretamente.
+        # Calls the constructor of the parent class (Equipment) using 'super()'.
+        # This ensures that all attributes of Equipment (name, connectors_in,
+        # properties_in, heat, work, etc.) are correctly initialized.
 
         self.work = 0.0
-        # Sobrescreve o valor padrão de 'work' (inicializado como None em Equipment)
-        # para 0.0. Isso é uma premissa comum para condensadores, que geralmente não
-        # realizam nem recebem trabalho significativo (não são bombas, turbinas, etc.).
+        # Overrides the default 'work' value (initialized as None in Equipment)
+        # to 0.0. This is a common assumption for condensers, which generally do not
+        # perform or receive significant work (they are not pumps, turbines, etc.).
 
     def calculate(self):
-        # Este metodo define o comportamento de cálculo específico para um condensador.
-        # Ele é uma implementação específica de um metodo que poderia ser genérico ou abstrato
-        # na classe base Equipment, ou simplesmente um novo metodo próprio do Condenser.
+        # This method defines the specific calculation behavior for a condenser.
+        # It is a specific implementation of a method that could be generic or abstract
+        # in the base Equipment class, or simply a new method specific to the Condenser.
 
         self.heat = self.enthalpy_balance
-        # Define o calor trocado (self.heat) como sendo igual ao balanço de entalpia
+        # Defines the heat exchanged (self.heat) as being equal to the enthalpy balance
         # (self.enthalpy_balance).
-        # Lembrando que 'self.enthalpy_balance' é calculado no metodo 'energy_balance'
-        # da classe pai 'Equipment' (h_out - h_in).
+        # Recall that 'self.enthalpy_balance' is calculated in the 'energy_balance' method
+        # of the parent class 'Equipment' (h_out - h_in).
 
-        # Para um condensador, o calor é tipicamente removido do sistema,
-        # ou seja, Q < 0. No balanço de energia Q - W = DeltaH, se W=0,
-        # então Q = DeltaH. Como condensadores removem calor, o DeltaH (H_out - H_in)
-        # será negativo. Portanto, self.heat será negativo, indicando calor saindo.
+        # For a condenser, heat is typically removed from the system,
+        # i.e., Q < 0. In the energy balance Q - W = DeltaH, if W=0,
+        # then Q = DeltaH. Since condensers remove heat, DeltaH (H_out - H_in)
+        # will be negative. Therefore, self.heat will be negative, indicating heat leaving.

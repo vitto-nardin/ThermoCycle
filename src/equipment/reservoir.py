@@ -1,48 +1,47 @@
 from .equipment import Equipment
-# Importa a classe 'Equipment' do módulo 'equipment'.
-# Essa importação é vital para estabelecer a relação de herança,
-# permitindo que Pump utilize todas as funcionalidades de Equipment.
+# Imports the 'Equipment' class from the 'equipment' module.
+# This import is vital to establish the inheritance relationship,
+# allowing Pump to use all functionalities of Equipment.
 
 
 class Reservoir(Equipment):
-    # Define a classe Pump como uma subclasse de Equipment.
-    # Essa herança permite que Pump acesse e utilize métodos e atributos de Equipment.
+    # Defines the Pump class as a subclass of Equipment.
+    # This inheritance allows Pump to access and use methods and attributes of Equipment.
 
     def __init__(self, name):
-        # O metodo __init__ é o construtor da classe Pump.
-        # Ele é invocado quando uma nova instância de Pump é criada.
-        # 'name' é um argumento para identificar a bomba.
+        # The __init__ method is the constructor of the Pump class.
+        # It is invoked when a new instance of Pump is created.
+        # 'name' is an argument to identify the pump.
 
         super().__init__(name)
-        # Chama o construtor da classe pai (Equipment) usando 'super()'.
-        # Isso garante que a instância da bomba seja inicializada corretamente com
-        # todos os atributos básicos de um equipamento, como nome, listas de conectores
-        # e propriedades, e os atributos heat e work.
+        # Calls the constructor of the parent class (Equipment) using 'super()'.
+        # This ensures that the pump instance is correctly initialized with
+        # all basic equipment attributes, such as name, connector lists
+        # and properties, and the heat and work attributes.
 
 
         self.heat = 0.0
-        # Sobrescreve o atributo 'heat' (calor) herdado de Equipment, definindo-o como 0.0.
-        # Bombas são tipicamente modeladas como equipamentos adiabáticos, o que significa que
-        # a troca de calor com o ambiente é considerada desprezível.
+        # Overrides the 'heat' attribute (heat) inherited from Equipment, setting it to 0.0.
+        # Pumps are typically modeled as adiabatic equipment, which means that
+        # heat exchange with the environment is considered negligible.
 
     def calculate(self):
-        # Este metodo define a lógica de cálculo específica para uma bomba.
-        # Ele será responsável por determinar o trabalho associado à operação da bomba.
+        # This method defines the specific calculation logic for a pump.
+        # It will be responsible for determining the work associated with the pump's operation.
 
         self.work = -250
-        # Atribui o valor do trabalho ('self.work') ao negativo do balanço de entalpia
+        # Assigns the value of work ('self.work') to the negative of the enthalpy balance
         # ('self.enthalpy_balance').
 
-        # O 'self.enthalpy_balance' é calculado pelo metodo 'energy_balance' (herdado de Equipment)
-        # como (H_out - H_in).
-        # Para uma bomba, a Primeira Lei da Termodinâmica para um volume de controle em regime permanente,
-        # com calor e variações de energia cinética/potencial desprezíveis, é:
+        # 'self.enthalpy_balance' is calculated by the 'energy_balance' method (inherited from Equipment)
+        # as (H_out - H_in).
+        # For a pump, the First Law of Thermodynamics for a steady-state control volume,
+        # with heat and kinetic/potential energy changes negligible, is:
         # Q - W = DeltaH
-        # Se Q = 0 (bomba adiabática), então -W = DeltaH, ou seja, W = -DeltaH.
-        # Aqui, 'W' representa o trabalho realizado *pelo* sistema.
-        # Em bombas, o trabalho é *fornecido ao* sistema (por exemplo, por um motor elétrico),
-        # o que, pela convenção da termodinâmica (trabalho positivo quando realizado pelo sistema),
-        # significa que o trabalho 'W' seria negativo.
-        # Portanto, se DeltaH (H_out - H_in) é positivo (a entalpia do fluido aumenta na bomba),
-        # então 'self.work' será negativo, indicando trabalho recebido pelo sistema.
-
+        # If Q = 0 (adiabatic pump), then -W = DeltaH, i.e., W = -DeltaH.
+        # Here, 'W' represents the work done *by* the system.
+        # In pumps, work is *supplied to* the system (e.g., by an electric motor),
+        # which, by the convention of thermodynamics (positive work when done by the system),
+        # means that the work 'W' would be negative.
+        # Therefore, if DeltaH (H_out - H_in) is positive (the fluid's enthalpy increases in the pump),
+        # then 'self.work' will be negative, indicating work received by the system.

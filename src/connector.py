@@ -1,44 +1,44 @@
-class Connector(): # Define uma nova classe chamada Connector. Diferente dos equipamentos, ela não herda da classe
-# Equipment.
+class Connector(): # Defines a new class called Connector. Unlike equipment, it does not inherit from the
+# Equipment class.
 
     def __init__(self, name, length):
-        # O construtor da classe Connector.
-        # 'name' é um atributo identificador para o conector (ex: "Corrente de Saída da Bomba", "Entrada do Aquecedor").
+        # The constructor of the Connector class.
+        # 'name' is an identifier attribute for the connector (e.g., "Pump Outlet Stream", "Heater Inlet").
 
         self.name = name
-        # Atribui o nome ao conector.
+        # Assigns the name to the connector.
 
         self.length = length
 
         self.DeltaP = None
 
         self.property_in = None
-        # Inicializa 'property_in' como None. Este atributo vai armazenar um objeto ThermoProperty que representa as propriedades da corrente que ENTRA no conector (ou seja, a que vem do equipamento 'equipment_in').
+        # Initializes 'property_in' as None. This attribute will store a ThermoProperty object that represents the properties of the stream entering the connector (i.e., the one coming from the 'equipment_in' equipment).
 
         self.property_out = None
-        # Inicializa 'property_out' como None. Este atributo vai armazenar um objeto ThermoProperty que representa as propriedades da corrente que SAI do conector (ou seja, a que vai para o equipamento 'equipment_out'). Em um conector ideal, property_in e property_out deveriam ser idênticos, representando a mesma corrente que passa pelo conector.
+        # Initializes 'property_out' as None. This attribute will store a ThermoProperty object that represents the properties of the stream exiting the connector (i.e., the one going to the 'equipment_out' equipment). In an ideal connector, property_in and property_out should be identical, representing the same stream passing through the connector.
 
         self.equipment_in = None
-        # Inicializa 'equipment_in' como None. Este atributo vai armazenar uma instância da classe Equipment(ou uma de suas subclasses, como Pump, Heater, etc.) da qual a corrente está SAINDO.
+        # Initializes 'equipment_in' as None. This attribute will store an instance of the Equipment class (or one of its subclasses, such as Pump, Heater, etc.) from which the stream is EXITING.
 
         self.equipment_out = None
-        # Inicializa 'equipment_out' como None. Este atributo vai armazenar uma instância da classe Equipment (ou uma de suas subclasses) para a qual a corrente está ENTRANDO.
+        # Initializes 'equipment_out' as None. This attribute will store an instance of the Equipment class (or one of its subclasses) to which the stream is ENTERING.
 
     def add_equipment_in(self, equipment):
-        # Adiciona o equipamento do qual a corrente *chega* (saiu de) a este conector.
+        # Adds the equipment from which the stream *arrives* (exited from) at this connector.
         self.equipment_in = equipment
 
     def add_equipment_out(self, equipment):
-        # Adiciona o equipamento para o qual a corrente *segue* (vai entrar em) a partir deste conector.
+        # Adds the equipment to which the stream *goes* (will enter) from this connector.
         self.equipment_out = equipment
 
 
     def set_properties_in(self, property):
-        # Define o objeto ThermoProperty que descreve a corrente que entra no conector.
+        # Defines the ThermoProperty object that describes the stream entering the connector.
         self.property_in = property
 
     def set_properties_out(self, property):
-        # Define o objeto ThermoProperty que descreve a corrente que sai do conector.
+        # Defines the ThermoProperty object that describes the stream exiting the connector.
         self.property_out = property
 
     def pressureLoss(self):
@@ -46,12 +46,12 @@ class Connector(): # Define uma nova classe chamada Connector. Diferente dos equ
 
 
     def calculate(self):
-        # Este metodo é chamado para garantir que as propriedades das correntes associadas a este conector estejam calculadas.
+        # This method is called to ensure that the properties of the streams associated with this connector are calculated.
 
         self.property_in.calculate()
-        # Chama o metodo 'calculate()' do objeto ThermoProperty que representa a entrada.
-        # Isso garante que todas as propriedades termodinâmicas da corrente de entrada sejam determinadas com base nas propriedades de estado fornecidas.
+        # Calls the 'calculate()' method of the ThermoProperty object that represents the input.
+        # This ensures that all thermodynamic properties of the inlet stream are determined based on the provided state properties.
 
         self.property_out.calculate()
-        # Chama o metodo 'calculate()' do objeto ThermoProperty que representa a saída.
-        # Isso garante que todas as propriedades termodinâmicas da corrente de saída sejam determinadas.Idealmente, 'property_out' seria uma cópia ou referência de 'property_in' em um conector simples, ou haveria uma lógica para que 'property_out' refletisse as mesmas condições de 'property_in'.
+        # Calls the 'calculate()' method of the ThermoProperty object that represents the output.
+        # This ensures that all thermodynamic properties of the outlet stream are determined. Ideally, 'property_out' would be a copy or reference of 'property_in' in a simple connector, or there would be logic for 'property_out' to reflect the same conditions as 'property_in'.

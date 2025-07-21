@@ -1,58 +1,56 @@
-
-class Equipment(): # Define uma nova classe chamada 'Equipment'
+class Equipment(): # Defines a new class called 'Equipment'
     def __init__(self, name):
-        # O metodo __init__ e o construtor da classe.
-        # Ele e chamado sempre que uma nova instancia de Equipment é criada.
-        # 'self' refere-se a instancia atual da classe.
-        # 'name' é um argumento que deve ser fornecido ao criar um equipamento.
+        # The __init__ method is the class constructor.
+        # It is called whenever a new instance of Equipment is created.
+        # 'self' refers to the current instance of the class.
+        # 'name' is an argument that must be provided when creating an equipment.
 
         self.name = name
-        # Atribui o nome fornecido ao atributo 'name' da instancia.
+        # Assigns the provided name to the 'name' attribute of the instance.
 
         self.connectors_in = []
-        # Inicializa uma lista vazia para armazenar conectores de entrada (tubulações).
+        # Initializes an empty list to store input connectors (pipes).
 
         self.connectors_out = []
-        # Inicializa uma lista vazia para armazenar os conectores de saída.
+        # Initializes an empty list to store output connectors.
 
         self.properties_in = []
-        # Inicializa uma lista vazia para armazenar as propriedades (temperatura, pressão...) das correntes de entrada.
+        # Initializes an empty list to store the properties (temperature, pressure...) of the input streams.
 
         self.properties_out = []
-        # Inicializa uma lista vazia para armazenar as propriedades das correntes na saída.
+        # Initializes an empty list to store the properties of the output streams.
 
         self.heat = None
-        # Inicializa o atributo 'heat' como None. Este atributo representará a troca de calor do equipamento.
+        # Initializes the 'heat' attribute as None. This attribute will represent the heat exchange of the equipment.
 
         self.work = None
-        # Inicializa o atributo 'work' como None. Este atributo representará o trabalho do equipamento.
+        # Initializes the 'work' attribute as None. This attribute will represent the work of the equipment.
 
-    def add_connectors_in(self, connector): # metodo para adicionar os conectores a lista de conectores de entrada.
+    def add_connectors_in(self, connector): # method to add connectors to the input connectors list.
         self.connectors_in.append(connector)
 
-    def add_connectors_out(self, connector): # metodo para adicionar os conectores a lista de conectores de saída
+    def add_connectors_out(self, connector): # method to add connectors to the output connectors list
         self.connectors_out.append(connector)
 
-    def set_heat(self, heat): # metodo que permite atribuir um valor de calor ao equipamento.
+    def set_heat(self, heat): # method that allows assigning a heat value to the equipment.
         self.heat = heat
 
-    def set_work(self, work): # metodo que permite atribuir um valor de trabalho ao equipamento.
+    def set_work(self, work): # method that allows assigning a work value to the equipment.
         self.work = work
 
     def energy_balance(self):
-        # metodo calcula o balanço de energia do equipamento.
-        h_in = 0.0 # Inicializa entalpia entrada igual a zero.
-        h_out = 0.0 # Inicializa entalpia saida igual a zero.
-        print(self.name) # Imprime o nome do equipamento para identificacao.
-        for property in self.properties_in: # Loop na lista properties_in
-            print('- IN:') # Adiciona o rotulo 'in' para as prop. de entrada.
-            print(property.resume) # Imprime o resumo da prop. implementado em thermoProperty.py
-            h_in += property.H * property.mass_flow_rate # Calcula a entalpia carregada pelo escoamento para dentro do equipamento.
+        # method calculates the energy balance of the equipment.
+        h_in = 0.0 # Initializes input enthalpy to zero.
+        h_out = 0.0 # Initializes output enthalpy to zero.
+        print(self.name) # Prints the equipment name for identification.
+        for property in self.properties_in: # Loop through the properties_in list
+            print('- IN:') # Adds the 'in' label for input properties.
+            print(property.resume) # Prints the property summary implemented in thermoProperty.py
+            h_in += property.H * property.mass_flow_rate # Calculates the enthalpy carried by the flow into the equipment.
 
-        for property in self.properties_out: # Loop na lista properties_out
-            print('- OUT:') # Adiciona o rotulo 'out' para as prop. de saida.
+        for property in self.properties_out: # Loop through the properties_out list
+            print('- OUT:') # Adds the 'out' label for output properties.
             print(property.resume)
-            h_out +=  property.H * property.mass_flow_rate # Calcula a entalpia carregada pelo escoamento para fora do equipamento.
+            h_out +=  property.H * property.mass_flow_rate # Calculates the enthalpy carried by the flow out of the equipment.
 
-        self.enthalpy_balance = h_out - h_in # Calcula o balanço de entalpia (Saída - Entrada) e armazena no atributo 'enthalpy_balance' da instância.
-
+        self.enthalpy_balance = h_out - h_in # Calculates the enthalpy balance (Output - Input) and stores it in the 'enthalpy_balance' attribute of the instance.
